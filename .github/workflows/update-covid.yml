@@ -16,11 +16,16 @@ jobs:
       with:
           python-version: '3.x'
 
+    - name: Fetch latest data from SF DPH
+      uses: swinton/httpie.action@1.0.6
+      with:
+        args: GET www.sfdph.org/dph/alerts/coronavirus.asp
+
     - name: Include required python libraries
       run: pip install pandas
 
     - name: Execute the script to update
-      run: python ./update-covid-19.py
+      run: python ./update-covid-19.py action
         
     - name: Commit the changed files
       uses: actions-go/push@master
