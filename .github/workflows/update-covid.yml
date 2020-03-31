@@ -25,7 +25,7 @@ jobs:
       run: pip install pandas
 
     - name: Troubleshooting
-      run: ls $HOME
+      run: find $HOME
 
     - name: Execute the script to update
       run: python ./update-covid-19.py action
