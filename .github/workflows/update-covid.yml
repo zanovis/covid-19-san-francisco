@@ -17,6 +17,9 @@ jobs:
           python-version: '3.x'
 
     - name: Execute the script to update
+      run: pip install pandas
+
+    - name: Execute the script to update
       run: python ./update-covid-19.py
         
     - name: Commit the changed files
