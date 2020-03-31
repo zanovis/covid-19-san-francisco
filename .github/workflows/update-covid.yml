@@ -21,8 +21,11 @@ jobs:
       with:
         args: GET www.sfdph.org/dph/alerts/coronavirus.asp
 
-    - name: Include required python libraries
+    - name: Install required python libraries
       run: pip install pandas
+
+    - name: Troubleshooting
+      run: ls $HOME
 
     - name: Execute the script to update
       run: python ./update-covid-19.py action
