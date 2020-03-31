@@ -7,3 +7,5 @@ Updates are sourced from the [San Francisco Department of Public Health website]
 Updates for a given date cover the 24 hour period from 9am of that date to 9am of the previous day.
 
 Historical data from 03/1 - 03/29 from https://github.com/ptraughber/covid-19-san-francisco
+
+![figure](covid-19-fig.png)
