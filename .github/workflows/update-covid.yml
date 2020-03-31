@@ -22,7 +22,7 @@ jobs:
         args: GET www.sfdph.org/dph/alerts/coronavirus.asp
 
     - name: Install required python libraries
-      run: pip install pandas
+      run: pip install pandas matplotlib
 
     - name: Troubleshooting
       run: find $HOME
