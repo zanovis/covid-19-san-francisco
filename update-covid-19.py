@@ -5,8 +5,10 @@
 
 import csv
 import datetime
+import os
 import pandas
 import re
+import sys
 import urllib.request
 
 CSV_FILE = 'covid-19-daily.csv'
@@ -17,9 +19,18 @@ FETCH_RE_DEATHS = re.compile(r'.*<p>Deaths: (\d+)\s*</p>.*')
 
 
 def main():
+    response_file = ''
+    if 'action' in sys.argv:
+         response_file = '%s/%s.response.body' % (
+             os.environ['HOME'], os.environ['GITHUB_ACTION'])
+
     prev_cases, prev_deaths = read_previous()
 
-    curr_cases, curr_deaths = fetch_curr()
+    curr_cases = curr_deaths = 0
+    if response_file:
+        curr_cases, curr_deaths = load_curr(response_file)         
+    else:
+        curr_cases, curr_deaths = fetch_curr()
 
     write_new(prev_cases, prev_deaths, curr_cases, curr_deaths)
 
@@ -61,14 +72,23 @@ def fetch_curr():
     curr_deaths = 0
 
     with urllib.request.urlopen(FETCH_URL) as response:
-        for line in response.readlines():
-            m = FETCH_RE_CASES.match(str(line))
-            if m:
-                curr_cases = m.groups()[0]
+        return read_curr(response)
 
-            m = FETCH_RE_DEATHS.match(str(line))
-            if m:
-                curr_deaths = m.groups()[0]
+             
+def load_curr(path):
+    with open(path, 'r') as f:
+        return read_curr(f)
+
+
+def read_curr(response):
+    for line in response.readlines():
+        m = FETCH_RE_CASES.match(str(line))
+        if m:
+            curr_cases = m.groups()[0]
+
+        m = FETCH_RE_DEATHS.match(str(line))
+        if m:
+            curr_deaths = m.groups()[0]
 
     return int(curr_cases), int(curr_deaths)
 
