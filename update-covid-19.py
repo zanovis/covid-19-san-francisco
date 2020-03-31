@@ -20,9 +20,8 @@ FETCH_RE_DEATHS = re.compile(r'.*<p>Deaths: (\d+)\s*</p>.*')
 
 def main():
     response_file = ''
-    if 'action' in sys.argv:
-         response_file = '%s/%s.response.body' % (
-             os.environ['HOME'], os.environ['GITHUB_ACTION'])
+    if len(sys.argv) == 2:
+         response_file = sys.argv[1]
 
     prev_cases, prev_deaths = read_previous()
 
