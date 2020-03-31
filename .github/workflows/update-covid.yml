@@ -16,7 +16,7 @@ jobs:
       with:
           python-version: '3.x'
 
-    - name: Execute the script to update
+    - name: Include required python libraries
       run: pip install pandas
 
     - name: Execute the script to update
