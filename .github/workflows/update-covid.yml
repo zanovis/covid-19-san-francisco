@@ -1,0 +1,25 @@
+name: Automated data update
+
+on:
+  schedule:
+    - cron: "0 17 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python3
+      uses: actions/setup-python@v1
+      with:
+          python-version: '3.x'
+
+    - name: Execute the script to update
+      run: python ./update-covid-19.py
+        
+    - name: Commit the changed files
+      uses: actions-go/push@master
+      with:
+        commit-message: '[automatic] update covid-19 csv and figure'
