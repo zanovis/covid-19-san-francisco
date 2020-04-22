@@ -16,7 +16,7 @@ CSV_FILE = 'covid-19-daily.csv'
 
 FETCH_URL = 'https://www.sfdph.org/dph/alerts/coronavirus.asp'
 FETCH_RE_CASES = re.compile(r'.*<p>Total Positive Cases: (\d+)\s*</p>.*')
-FETCH_RE_DEATHS = re.compile(r'.*<p>Deaths: (\d+)\s*</p>.*')
+FETCH_RE_DEATHS = re.compile(r'.*<p>Deaths: (\d+)\s*')
 
 
 def main():
