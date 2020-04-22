@@ -10,6 +10,7 @@ import pandas
 import re
 import sys
 import urllib.request
+from matplotlib import rcParams
 
 CSV_FILE = 'covid-19-daily.csv'
 
@@ -38,7 +39,8 @@ def main():
 
 def write_image():
     df = pandas.read_csv(CSV_FILE)
-    fig = df.plot(secondary_y=('New cases', 'New deaths')).get_figure()
+    rcParams.update({'figure.autolayout': True})
+    fig = df.plot('Date',secondary_y=('New cases', 'New deaths', 'Cumulative deaths'), rot=30).get_figure()
     fig.savefig('covid-19-fig.png')
 
 
