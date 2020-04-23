@@ -7,6 +7,7 @@ import csv
 import datetime
 import os
 import pandas
+import pytz
 import re
 import sys
 import urllib.request
@@ -25,7 +26,8 @@ def main():
     if len(sys.argv) == 2:
          response_file = sys.argv[1]
 
-    prev_cases, prev_deaths = read_previous()
+    prev_date, prev_cases, prev_deaths = read_previous()
+
 
     curr_cases = curr_deaths = 0
     if response_file:
@@ -33,7 +35,9 @@ def main():
     else:
         curr_cases, curr_deaths = fetch_curr()
 
-    write_new(prev_cases, prev_deaths, curr_cases, curr_deaths)
+    curr_date = datetime.datetime.now(tz=pytz.timezone('US/Pacific')).strftime('%Y/%m/%d')
+    if curr_date != prev_date:
+        write_new(prev_cases, prev_deaths, curr_cases, curr_deaths, curr_date)
 
     write_image()
 
@@ -41,21 +45,20 @@ def main():
 def write_image():
     df = pandas.read_csv(CSV_FILE)
     rcParams.update({'figure.autolayout': True})
-    fig = df.plot('Date',secondary_y=('New cases', 'New deaths', 'Cumulative deaths'), rot=30,title='Linear Scale').get_figure()
+    fig = df.plot('Date', secondary_y=('New cases', 'New deaths', 'Cumulative deaths'), rot=30, title='Linear Scale').get_figure()
     fig.savefig('covid-19-fig.png')
     fig = df.plot(logy=True, title='Log Scale')
     fig.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
     fig.figure.savefig('covid-19-log_fig.png')
 
 
-def write_new(prev_cases, prev_deaths, curr_cases, curr_deaths):
+def write_new(prev_cases, prev_deaths, curr_cases, curr_deaths, curr_date):
     new_cases = curr_cases - prev_cases
     new_cases_pct = new_cases / prev_cases * 100
     new_deaths = curr_deaths - prev_deaths
-    date = datetime.datetime.now().strftime('%Y/%m/%d')
 
     csv_line = ('%s,%d,%d,%i%%,%d,%d,%s\n' % (
-        date, new_cases, curr_cases, new_cases_pct,
+        curr_date, new_cases, curr_cases, new_cases_pct,
         new_deaths, curr_deaths,
         FETCH_URL))
 
@@ -69,7 +72,7 @@ def read_previous():
     with open(CSV_FILE, 'r') as f:
         cr = csv.reader(f.readlines())
         prev = list(cr)[-1]
-        return int(prev[2]), int(prev[5])
+        return prev[0], int(prev[2]), int(prev[5])
 
 
 def fetch_curr():
