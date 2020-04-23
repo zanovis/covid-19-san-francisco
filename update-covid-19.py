@@ -49,7 +49,7 @@ def write_image():
     fig.savefig('covid-19-fig.png')
     fig = df.plot(logy=True, title='Log Scale')
     fig.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
-    fig.figure.savefig('covid-19-log_fig.png')
+    fig.figure.savefig('covid-19-log-fig.png')
 
 
 def write_new(prev_cases, prev_deaths, curr_cases, curr_deaths, curr_date):
