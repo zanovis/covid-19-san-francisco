@@ -7,6 +7,7 @@ import csv
 import datetime
 import os
 import pandas
+import pytz
 import re
 import sys
 import urllib.request
@@ -33,9 +34,9 @@ def main():
     else:
         curr_cases, curr_deaths = fetch_curr()
 
-    curr_date = datetime.datetime.now().strftime('%Y/%m/%d')
+    curr_date = datetime.datetime.now(tz=pytz.timezone('US/Pacific')).strftime('%Y/%m/%d')
     if curr_date != prev_date:
-        write_new(prev_cases, prev_deaths, curr_cases, curr_deaths)
+        write_new(prev_cases, prev_deaths, curr_cases, curr_deaths, curr_date)
 
     write_image()
 
