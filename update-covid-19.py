@@ -44,11 +44,11 @@ def main():
 def write_image():
     df = pandas.read_csv(CSV_FILE)
     matplotlib.rcParams.update({'figure.autolayout': True})
-    fig = df.plot('Date', secondary_y=('New cases', 'New deaths', 'Cumulative deaths'), rot=30, title='Linear Scale').get_figure()
-    fig.savefig('covid-19-fig.png')
-    fig = df.plot(logy=True, title='Log Scale')
-    fig.yaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter('{x:,.0f}'))
-    fig.figure.savefig('covid-19-log-fig.png')
+    fig1 = df.plot('Date', secondary_y=('New cases', 'New deaths', 'Cumulative deaths'), rot=30, title='Linear Scale').get_figure()
+    fig1.savefig('covid-19-fig.png')
+    fig2 = df.plot('Date', rot=30, title='Log Scale', logy=True)
+    fig2.yaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter('{x:,.0f}'))
+    fig2.figure.savefig('covid-19-log-fig.png')
 
 
 def write_new(prev_cases, prev_deaths, curr_cases, curr_deaths, curr_date):
