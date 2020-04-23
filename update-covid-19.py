@@ -11,8 +11,7 @@ import pytz
 import re
 import sys
 import urllib.request
-from matplotlib import rcParams
-import matplotlib as mpl
+import matplotlib 
 
 CSV_FILE = 'covid-19-daily.csv'
 
@@ -44,11 +43,11 @@ def main():
 
 def write_image():
     df = pandas.read_csv(CSV_FILE)
-    rcParams.update({'figure.autolayout': True})
+    matplotlib.rcParams.update({'figure.autolayout': True})
     fig = df.plot('Date', secondary_y=('New cases', 'New deaths', 'Cumulative deaths'), rot=30, title='Linear Scale').get_figure()
     fig.savefig('covid-19-fig.png')
     fig = df.plot(logy=True, title='Log Scale')
-    fig.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
+    fig.yaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter('{x:,.0f}'))
     fig.figure.savefig('covid-19-log-fig.png')
 
 
